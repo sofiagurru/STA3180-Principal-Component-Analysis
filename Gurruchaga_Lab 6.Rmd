@@ -1,0 +1,76 @@
+---
+title: "Gurruchaga_Lab 6"
+author: "Sofia Gurruchaga"
+date: "2024-11-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library(MASS)
+library(readxl)
+Crime_data <- read_excel("Downloads/Crime data.xlsx")
+View(Crime_data)View(crime)
+```
+
+i.
+```{r}
+apply(crime[2:8],2,mean)
+```
+```{r}
+apply(crime[2:8],2,var)
+```
+```{r}
+apply(crime[2:8],2,sd)
+```
+
+ii.
+```{r}
+cor(crime[2:8])
+```
+
+iii.
+```{r}
+crime.pca<-princomp(crime[2:8], cor = T)
+summary(crime.pca, loading = T)
+```
+
+iv.
+```{r}
+plot(1:(length(crime.pca$sdev)),(crime.pca$sdev)^2, type = "b", main = "Scree Plot", xlab = "Number of Components", ylab = "Eigenvalue Size")
+```
+
+v.
+```{r}
+biplot(crime.pca, xlabs = crime$city, main = "Biplot", cex = 0.6)
+```
+
+vi.
+```{r}
+plot(crime.pca$scores[ ,1], crime.pca$scores[ ,2], ylim = range(crime.pca$scores[ ,1]), xlab = "PC 1", ylab = "PC 2", type = "n", lwd = 2)
+
+text(crime.pca$scores[ ,1], crime.pca$scores[ ,2], labels = crime$city, cex = 0.7, lwd = 2, col = c(rep("red", times = 50), rep("blue", times = 50), rep("green", times = 50)))
+```
+
+vii.
+```{r}
+summary(crime.pca)$scores[2, 1:2]
+```
+
+vii.
+```{r}
+loadings <- crime.pca$loadings
+var_murder <- sum(loadings["murder", 1:2]^2)
+var_burglary <- sum(loadings["burglary", 1:2]^2)
+```
+
+```{r}
+var_murder
+var_burglary
+```
+
